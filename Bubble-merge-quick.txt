@@ -1,0 +1,417 @@
+//Bubble
+public static void bubbleSort(int[] list) { 
+  boolean sorted = false; 
+  for (int k=1; k < list.length && !sorted; k++) { 
+     sorted = true; 
+     for (int i=0; i<list.length-k; i++) { 
+        if (list[i] > list[i+1]) { 
+           swap(list, i, i+1);
+           sorted = false; 
+        } 
+     } 
+  }     
+}
+//Bubble: arraylist TreeNode
+public static <T> void bubbleSort(ArrayList<TreeNode<T>> list, Comparator<TreeNode<T>> comp) {
+    boolean sorted;
+    for (int k = 0; k < list.size() - 1; k++) {
+        sorted = true;
+        for (int i = 0; i < list.size() - k - 1; i++) {
+            if (comp.compare(list.get(i), list.get(i + 1)) > 0) {
+                Collections.swap(list, i, i + 1);
+                sorted = false;
+            }
+        }
+        if (sorted) break;
+    }
+}
+//Bubble linkedlist TreeNode
+public void bubbleSort(Comparator<TreeNode<T>> comp) {
+    if (head == null || head.next == null) return;
+
+    boolean sorted;
+    do {
+        sorted = true;
+        Node<T> current = head;
+
+        while (current.next != null) {
+            if (comp.compare(current.treeNode, current.next.treeNode) > 0) {
+                // Swap values
+                TreeNode<T> temp = current.treeNode;
+                current.treeNode = current.next.treeNode;
+                current.next.treeNode = temp;
+                sorted = false;
+            }
+            current = current.next;
+        }
+    } while (!sorted);
+}
+//Bubble linkedlist hashmap
+public static <K, V extends Comparable<V>> Node<K, V> bubbleSortByValues(Map<K, V> map) {
+        // Convert HashMap to LinkedList of Nodes
+        Node<K, V> head = createLinkedList(map);
+
+        if (head == null || head.next == null) return head;
+
+        boolean sorted;
+        Node<K, V> current;
+
+        do {
+            sorted = true;
+            current = head;
+
+            while (current.next != null) {
+                if (current.value.compareTo(current.next.value) > 0) {
+                    // Swap values
+                    V tempValue = current.value;
+                    K tempKey = current.key;
+
+                    current.value = current.next.value;
+                    current.key = current.next.key;
+
+                    current.next.value = tempValue;
+                    current.next.key = tempKey;
+
+                    sorted = false;
+                }
+                current = current.next;
+            }
+        } while (!sorted);
+
+        return head;
+    }
+
+    private static <K, V> Node<K, V> createLinkedList(Map<K, V> map) {
+        Node<K, V> head = null, tail = null;
+
+        for (Map.Entry<K, V> entry : map.entrySet()) {
+            Node<K, V> newNode = new Node<>(entry.getKey(), entry.getValue());
+            if (head == null) {
+                head = newNode;
+                tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
+            }
+        }
+        return head;
+    }
+//bubble hashmap arraylist
+public static <K, V> List<Map.Entry<K, V>> bubbleSort(HashMap<K, V> map, Comparator<Map.Entry<K, V>> comp) {
+    List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
+
+    for (int i = 0; i < list.size() - 1; i++) {
+        for (int j = 0; j < list.size() - i - 1; j++) {
+            if (comp.compare(list.get(j), list.get(j + 1)) > 0) {
+                Collections.swap(list, j, j + 1);
+            }
+        }
+    }
+    return list;
+}
+
+
+//Merge
+public static void mergeSort(int[] list) {
+  if (list.length > 1) {
+    int[] firstHalf = new int[list.length/2];
+    int[] secondHalf = new int[list.length - 
+                                 list.length/2];
+    System.arraycopy(list, 0, 
+                     firstHalf, 0, list.length/2);
+    System.arraycopy(list,list.length/2, 
+                     secondHalf, 0, 
+                     list.length-list.length/2);
+    mergeSort(firstHalf);
+    mergeSort(secondHalf);
+    merge(firstHalf, secondHalf, list);
+  }
+}
+//merge arrylist TreeNode
+public static <T> void mergeSort(ArrayList<TreeNode<T>> list, Comparator<TreeNode<T>> comp) {
+    if (list.size() < 2) return;
+
+    int mid = list.size() / 2;
+    ArrayList<TreeNode<T>> left = new ArrayList<>(list.subList(0, mid));
+    ArrayList<TreeNode<T>> right = new ArrayList<>(list.subList(mid, list.size()));
+
+    mergeSort(left, comp);
+    mergeSort(right, comp);
+    merge(list, left, right, comp);
+}
+
+private static <T> void merge(ArrayList<TreeNode<T>> list, ArrayList<TreeNode<T>> left, ArrayList<TreeNode<T>> right, Comparator<TreeNode<T>> comp) {
+    int i = 0, j = 0, k = 0;
+    while (i < left.size() && j < right.size()) {
+        if (comp.compare(left.get(i), right.get(j)) <= 0) {
+            list.set(k++, left.get(i++));
+        } else {
+            list.set(k++, right.get(j++));
+        }
+    }
+    while (i < left.size()) list.set(k++, left.get(i++));
+    while (j < right.size()) list.set(k++, right.get(j++));
+}
+//merge linkedlist treeNode
+public Node<T> mergeSort(Node<T> head, Comparator<TreeNode<T>> comp) {
+    if (head == null || head.next == null) return head;
+
+    Node<T> middle = getMiddle(head);
+    Node<T> nextToMiddle = middle.next;
+    middle.next = null;
+
+    Node<T> left = mergeSort(head, comp);
+    Node<T> right = mergeSort(nextToMiddle, comp);
+
+    return merge(left, right, comp);
+}
+
+private Node<T> merge(Node<T> a, Node<T> b, Comparator<TreeNode<T>> comp) {
+    if (a == null) return b;
+    if (b == null) return a;
+
+    Node<T> result;
+    if (comp.compare(a.treeNode, b.treeNode) <= 0) {
+        result = a;
+        result.next = merge(a.next, b, comp);
+    } else {
+        result = b;
+        result.next = merge(a, b.next, comp);
+    }
+    return result;
+}
+
+private Node<T> getMiddle(Node<T> head) {
+    if (head == null) return head;
+
+    Node<T> slow = head, fast = head;
+    while (fast.next != null && fast.next.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    return slow;
+}
+//merge linkedlist hashmap
+public static <K, V extends Comparable<V>> Node<K, V> mergeSort(Node<K, V> head) {
+    if (head == null || head.next == null) return head;
+
+    Node<K, V> middle = getMiddle(head);
+    Node<K, V> nextToMiddle = middle.next;
+    middle.next = null;
+
+    Node<K, V> left = mergeSort(head);
+    Node<K, V> right = mergeSort(nextToMiddle);
+
+    return sortedMerge(left, right);
+}
+
+private static <K, V extends Comparable<V>> Node<K, V> sortedMerge(Node<K, V> a, Node<K, V> b) {
+    if (a == null) return b;
+    if (b == null) return a;
+
+    Node<K, V> result;
+
+    if (a.value.compareTo(b.value) <= 0) {
+        result = a;
+        result.next = sortedMerge(a.next, b);
+    } else {
+        result = b;
+        result.next = sortedMerge(a, b.next);
+    }
+
+    return result;
+}
+
+private static <K, V> Node<K, V> getMiddle(Node<K, V> head) {
+    if (head == null) return head;
+
+    Node<K, V> slow = head, fast = head;
+    while (fast.next != null && fast.next.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    return slow;
+}
+//merge hashmap arraylist
+public static <K, V> List<Map.Entry<K, V>> mergeSort(HashMap<K, V> map, Comparator<Map.Entry<K, V>> comp) {
+    List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
+    mergeSortHelper(list, 0, list.size() - 1, comp);
+    return list;
+}
+
+private static <K, V> void mergeSortHelper(List<Map.Entry<K, V>> list, int left, int right, Comparator<Map.Entry<K, V>> comp) {
+    if (left < right) {
+        int mid = (left + right) / 2;
+
+        mergeSortHelper(list, left, mid, comp);
+        mergeSortHelper(list, mid + 1, right, comp);
+        merge(list, left, mid, right, comp);
+    }
+}
+
+private static <K, V> void merge(List<Map.Entry<K, V>> list, int left, int mid, int right, Comparator<Map.Entry<K, V>> comp) {
+    List<Map.Entry<K, V>> temp = new ArrayList<>();
+
+    int i = left, j = mid + 1;
+    while (i <= mid && j <= right) {
+        if (comp.compare(list.get(i), list.get(j)) <= 0) {
+            temp.add(list.get(i++));
+        } else {
+            temp.add(list.get(j++));
+        }
+    }
+    while (i <= mid) temp.add(list.get(i++));
+    while (j <= right) temp.add(list.get(j++));
+
+    for (int k = left; k <= right; k++) {
+        list.set(k, temp.get(k - left));
+    }
+}
+
+
+//Quick
+public static void quickSort(int[] list) {
+   quickSort(list, 0, list.length-1);
+}
+
+// Recursive Helper Method
+public static void quickSort(int[] list, 
+                             int first, int last) {
+  if (last > first) {
+    int pivotIndex = partition(list, first, last);
+    quickSort(list, first, pivotIndex-1);
+    quickSort(list, pivotIndex+1, last);
+  }
+}
+//quick arraylist TreeNode
+public static <T> void quickSort(ArrayList<TreeNode<T>> list, int low, int high, Comparator<TreeNode<T>> comp) {
+    if (low < high) {
+        int pi = partition(list, low, high, comp);
+        quickSort(list, low, pi - 1, comp);
+        quickSort(list, pi + 1, high, comp);
+    }
+}
+
+private static <T> int partition(ArrayList<TreeNode<T>> list, int low, int high, Comparator<TreeNode<T>> comp) {
+    TreeNode<T> pivot = list.get(high);
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (comp.compare(list.get(j), pivot) <= 0) {
+            i++;
+            Collections.swap(list, i, j);
+        }
+    }
+    Collections.swap(list, i + 1, high);
+    return i + 1;
+}
+//quick treenode linkedlist
+public void quickSort(Comparator<TreeNode<T>> comp) {
+    head = quickSortRec(head, getTail(head), comp);
+}
+
+private Node<T> quickSortRec(Node<T> head, Node<T> tail, Comparator<TreeNode<T>> comp) {
+    if (head == null || head == tail) return head;
+
+    Node<T> newHead = null, newTail = null;
+    Node<T> pivot = partition(head, tail, newHead, newTail, comp);
+
+    if (newHead != pivot) {
+        Node<T> temp = newHead;
+        while (temp.next != pivot) temp = temp.next;
+        temp.next = null;
+
+        newHead = quickSortRec(newHead, temp, comp);
+        temp = getTail(newHead);
+        temp.next = pivot;
+    }
+    pivot.next = quickSortRec(pivot.next, newTail, comp);
+    return newHead;
+}
+
+private Node<T> partition(Node<T> head, Node<T> tail, Node<T> newHead, Node<T> newTail, Comparator<TreeNode<T>> comp) {
+    Node<T> pivot = tail, current = head, prev = null;
+    Node<T> tailNode = pivot;
+
+    while (current != pivot) {
+        if (comp.compare(current.treeNode, pivot.treeNode) <= 0) {
+            if (newHead == null) newHead = current;
+            prev = current;
+            current = current.next;
+        } else {
+            if (prev != null) prev.next = current.next;
+            Node<T> tmp = current.next;
+            current.next = null;
+            tailNode.next = current;
+            tailNode = current;
+            current = tmp;
+        }
+    }
+    if (newHead == null) newHead = pivot;
+    newTail = tailNode;
+    return pivot;
+}
+
+private Node<T> getTail(Node<T> head) {
+    while (head != null && head.next != null) head = head.next;
+    return head;
+}
+//quick hashmap linkedlist
+public Node<K, V> quickSort(Node<K, V> head, Comparator<Node<K, V>> comp) {
+    return quickSortRec(head, getTail(head), comp);
+}
+
+private Node<K, V> quickSortRec(Node<K, V> head, Node<K, V> tail, Comparator<Node<K, V>> comp) {
+    if (head == null || head == tail) return head;
+
+    Node<K, V> newHead = null, newTail = null;
+    Node<K, V> pivot = partition(head, tail, newHead, newTail, comp);
+
+    if (newHead != pivot) {
+        Node<K, V> temp = newHead;
+        while (temp.next != pivot) temp = temp.next;
+        temp.next = null;
+
+        newHead = quickSortRec(newHead, temp, comp);
+        temp = getTail(newHead);
+        temp.next = pivot;
+    }
+    pivot.next = quickSortRec(pivot.next, newTail, comp);
+    return newHead;
+}
+
+private Node<K, V> getTail(Node<K, V> head) {
+    while (head != null && head.next != null) head = head.next;
+    return head;
+}
+//quick arraylist hashmap
+public static <K, V> List<Map.Entry<K, V>> quickSort(HashMap<K, V> map, Comparator<Map.Entry<K, V>> comp) {
+    List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
+    quickSortHelper(list, 0, list.size() - 1, comp);
+    return list;
+}
+
+private static <K, V> void quickSortHelper(List<Map.Entry<K, V>> list, int low, int high, Comparator<Map.Entry<K, V>> comp) {
+    if (low < high) {
+        int pi = partition(list, low, high, comp);
+        quickSortHelper(list, low, pi - 1, comp);
+        quickSortHelper(list, pi + 1, high, comp);
+    }
+}
+
+private static <K, V> int partition(List<Map.Entry<K, V>> list, int low, int high, Comparator<Map.Entry<K, V>> comp) {
+    Map.Entry<K, V> pivot = list.get(high);
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (comp.compare(list.get(j), pivot) <= 0) {
+            i++;
+            Collections.swap(list, i, j);
+        }
+    }
+    Collections.swap(list, i + 1, high);
+    return i + 1;
+}
+
+
+

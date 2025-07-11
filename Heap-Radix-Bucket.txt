@@ -1,0 +1,262 @@
+//Heap
+public static void heapSort(int[] list) {
+  // Create a min heap 
+  PriorityQueue<Integer> heap = 
+                          new PriorityQueue<>();
+    // Add the elements of list to the heap
+    for(int i=0; i<list.length; i++){
+       heap.offer(list[i]);
+    }
+    // Move the data from the heap back to list
+    for (int i=0; i<list.length; i++) {
+       list[i] = heap.poll();
+    }
+}
+//heap arraylist TreeNode
+public static <T> void heapSort(ArrayList<TreeNode<T>> list, Comparator<TreeNode<T>> comp) {
+    PriorityQueue<TreeNode<T>> heap = new PriorityQueue<>(comp);
+    heap.addAll(list);
+
+    for (int i = 0; i < list.size(); i++) {
+        list.set(i, heap.poll());
+    }
+}
+//heap linkedlist hashmap
+public Node<K, V> heapSort(Map<K, V> map, Comparator<Node<K, V>> comp) {
+    PriorityQueue<Node<K, V>> heap = new PriorityQueue<>(comp);
+
+    for (Map.Entry<K, V> entry : map.entrySet()) {
+        heap.offer(new Node<>(entry.getKey(), entry.getValue()));
+    }
+
+    Node<K, V> dummy = new Node<>(null, null);
+    Node<K, V> current = dummy;
+
+    while (!heap.isEmpty()) {
+        current.next = heap.poll();
+        current = current.next;
+    }
+
+    return dummy.next;
+}
+//heap hashmap arraylist
+public static <K, V> List<Map.Entry<K, V>> heapSort(HashMap<K, V> map, Comparator<Map.Entry<K, V>> comp) {
+    PriorityQueue<Map.Entry<K, V>> heap = new PriorityQueue<>(comp);
+    heap.addAll(map.entrySet());
+
+    List<Map.Entry<K, V>> result = new ArrayList<>();
+    while (!heap.isEmpty()) {
+        result.add(heap.poll());
+    }
+    return result;
+}
+
+//buckets
+public static void bucketSort(int[] list) {
+   int t = max(list);
+   ArrayList<ArrayList<Integer>> buckets;
+   buckets = new ArrayList<>(t+1);
+   // create t+1 buckets
+   for(int i=0; i<t+1; i++)
+     buckets.add(new ArrayList<>());
+        
+   //Distribute the data on the buckets
+   for(int i=0; i<list.length; i++) {
+     ArrayList<Integer> bucket = buckets.get(list[i]);
+     bucket.add(list[i]);
+   }
+   // Move the data from the buckets back to the list
+   int k = 0;
+   for(int i=0; i<buckets.size(); i++) {
+     ArrayList<Integer> bucket = buckets.get(i);
+     for(int j=0; j<bucket.size(); j++)
+       list[k++] = bucket.get(j);
+   }
+}
+//bucket arraylist TreeNode
+public static <T> void bucketSort(ArrayList<TreeNode<Integer>> list) {
+    if (list.isEmpty()) return;
+
+    int min = list.get(0).value;
+    int max = list.get(0).value;
+
+// Loop through the list to find min and max values
+for (TreeNode node : list) {
+    if (node.value < min) {
+        min = node.value;
+    }
+    if (node.value > max) {
+        max = node.value;
+    }
+}
+
+    int bucketSize = 5; // Adjust bucket size as needed
+
+    int bucketCount = (max - min) / bucketSize + 1;
+    List<List<TreeNode<Integer>>> buckets = new ArrayList<>();
+
+    for (int i = 0; i < bucketCount; i++) {
+        buckets.add(new ArrayList<>());
+    }
+
+    for (TreeNode<Integer> node : list) {
+        int index = (node.value - min) / bucketSize;
+        buckets.get(index).add(node);
+    }
+
+    list.clear();
+    for (List<TreeNode<Integer>> bucket : buckets) {
+        bucket.sort(Comparator.comparingInt(node -> node.value));
+        list.addAll(bucket);
+    }
+}
+//bucket linkedlist treenode
+public void bucketSort(Comparator<TreeNode<T>> comp, int bucketSize) {
+    ArrayList<Node<T>> buckets = new ArrayList<>(bucketSize);
+    for (int i = 0; i < bucketSize; i++) buckets.add(null);
+
+    Node<T> current = head;
+    while (current != null) {
+        int index = current.treeNode.value.hashCode() % bucketSize;
+        Node<T> next = current.next;
+        current.next = buckets.get(index);
+        buckets.set(index, current);
+        current = next;
+    }
+
+    head = null;
+    for (Node<T> bucket : buckets) {
+        if (bucket != null) {
+            bucket = mergeSort(bucket, comp);
+            if (head == null) head = bucket;
+            else getTail(head).next = bucket;
+        }
+    }
+}
+//bucket hashmap linkedlist
+public Node<K, V> bucketSort(Map<K, V> map, int bucketSize, Comparator<Node<K, V>> comp) {
+    List<List<Node<K, V>>> buckets = new ArrayList<>(bucketSize);
+    for (int i = 0; i < bucketSize; i++) buckets.add(new ArrayList<>());
+
+    for (Map.Entry<K, V> entry : map.entrySet()) {
+        int index = entry.getValue().hashCode() % bucketSize;
+        buckets.get(index).add(new Node<>(entry.getKey(), entry.getValue()));
+    }
+
+    Node<K, V> dummy = new Node<>(null, null);
+    Node<K, V> current = dummy;
+
+    for (List<Node<K, V>> bucket : buckets) {
+        bucket.sort(comp);
+        for (Node<K, V> node : bucket) {
+            current.next = node;
+            current = current.next;
+        }
+    }
+
+    return dummy.next;
+}
+//bucket hashmap arraylist
+public static <K, V> List<Map.Entry<K, V>> bucketSort(HashMap<K, V> map, Comparator<Map.Entry<K, V>> comp) {
+    int bucketSize = 10;
+    List<List<Map.Entry<K, V>>> buckets = new ArrayList<>(bucketSize);
+
+    for (int i = 0; i < bucketSize; i++) {
+        buckets.add(new ArrayList<>());
+    }
+
+    for (Map.Entry<K, V> entry : map.entrySet()) {
+        int index = Math.abs(entry.getKey().hashCode() % bucketSize);
+        buckets.get(index).add(entry);
+    }
+
+    List<Map.Entry<K, V>> sortedList = new ArrayList<>();
+    for (List<Map.Entry<K, V>> bucket : buckets) {
+        bucket.sort(comp);
+        sortedList.addAll(bucket);
+    }
+    return sortedList;
+}
+
+
+//Radix
+public static void radixSort(int[] list) {
+  ArrayList<ArrayList<Integer>> buckets;
+  buckets = new ArrayList<>();
+  Integer maxValue = max(list); 
+  int digits = maxValue.toString().length();
+  for(int d=0; d<digits; d++) {
+     // create 10 buckets
+     for(int j=0; j<10; j++) { 
+        buckets.add(new ArrayList<>());
+     } 
+     //Distribute the data on the buckets
+     for(int j=0; j<list.length; j++){
+      int bucketIndex = (list[j]%(int)(Math.pow(10, d+1)))/
+                                     (int)(Math.pow(10,d));
+      ArrayList<Integer> bucket = buckets.get(bucketIndex);
+      bucket.add(list[j]);
+     }
+     // Move the data from the buckets back to the list
+     for(int j=0,k=0; j<10; j++) {
+       ArrayList<Integer> bucket = buckets.get(j);
+       for(int l=0; l<bucket.size(); l++)
+          list[k++] = bucket.get(l);
+      }
+      // clear all the buckets for the next iteration
+      buckets.clear(); 
+   }
+}
+//radix arraylist treenode
+public static void radixSort(ArrayList<TreeNode> list) {
+        if (list == null || list.isEmpty()) return;
+
+        // Find the maximum number to determine the number of digits
+        int max = getMaxValue(list);
+
+        // Perform counting sort for each digit
+        for (int exp = 1; max / exp > 0; exp *= 10) {
+            countingSortByDigit(list, exp);
+        }
+    }
+
+    private static int getMaxValue(ArrayList<TreeNode> list) {
+        int max = list.get(0).value;
+        for (TreeNode node : list) {
+            if (node.value > max) {
+                max = node.value;
+            }
+        }
+        return max;
+    }
+
+    private static void countingSortByDigit(ArrayList<TreeNode> list, int exp) {
+        int n = list.size();
+        ArrayList<TreeNode> output = new ArrayList<>(n);
+        for (int i = 0; i < n; i++) output.add(null); // Initialize output list
+
+        int[] count = new int[10]; // There are 10 possible digits (0-9)
+
+        // Count occurrences of each digit
+        for (TreeNode node : list) {
+            int digit = (node.value / exp) % 10;
+            count[digit]++;
+        }
+
+        // Update count to store positions of digits
+        for (int i = 1; i < 10; i++) {
+            count[i] += count[i - 1];
+        }
+
+        // Build the output list
+        for (int i = n - 1; i >= 0; i--) {
+            int digit = (list.get(i).value / exp) % 10;
+            output.set(count[digit] - 1, list.get(i));
+            count[digit]--;
+        }
+
+        // Copy sorted output back to the original list
+        for (int i = 0; i < n; i++) {
+            list.set(i, output.get(i));
+        }
+    }

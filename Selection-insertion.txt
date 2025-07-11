@@ -1,0 +1,236 @@
+
+//selection
+public static void selectionSort(int[] list) {
+    int minIndex;
+    for (int i=0; i<list.length-1; i++) {
+       // Find the smallest element from i+1 to N
+       int min = list[i]; 
+       minIndex = i;
+       for (int j=i+1; j<list.length; j++){
+          if (list[j] < min){
+              min = list[j];
+              minIndex = j;
+          }
+       }
+       // Swap the smallest element with element i
+       swap(list, i, minIndex);
+    }      
+}
+//selection arraylist in TreeNode
+public static <T> void selectionSort(ArrayList<TreeNode<T>> list, Comparator<TreeNode<T>> comp) {
+    for (int i = 0; i < list.size() - 1; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < list.size(); j++) {
+            if (comp.compare(list.get(j), list.get(minIndex)) < 0) {
+                minIndex = j;
+            }
+        }
+        Collections.swap(list, i, minIndex);
+    }
+}
+//selelctioon linkedlist treeNode
+public void selectionSort(Comparator<TreeNode<T>> comp) {
+    if (head == null || head.next == null) return;
+
+    Node<T> current = head;
+    while (current != null) {
+        Node<T> minNode = current;
+        Node<T> r = current.next;
+
+        while (r != null) {
+            if (comp.compare(r.treeNode, minNode.treeNode) < 0) {
+                minNode = r;
+            }
+            r = r.next;
+        }
+
+        // Swap the values
+        TreeNode<T> temp = current.treeNode;
+        current.treeNode = minNode.treeNode;
+        minNode.treeNode = temp;
+
+        current = current.next;
+    }
+}
+//selection linkedlist hashmap
+public Node<K, V> selectionSort(Node<K, V> head, Comparator<Node<K, V>> comp) {
+    if (head == null || head.next == null) return head;
+
+    Node<K, V> current = head;
+
+    while (current != null) {
+        Node<K, V> minNode = current;
+        Node<K, V> r = current.next;
+
+        while (r != null) {
+            if (comp.compare(r, minNode) < 0) {
+                minNode = r;
+            }
+            r = r.next;
+        }
+
+        // Swap values
+        K tempKey = current.key;
+        V tempValue = current.value;
+
+        current.key = minNode.key;
+        current.value = minNode.value;
+
+        minNode.key = tempKey;
+        minNode.value = tempValue;
+
+        current = current.next;
+    }
+    return head;
+}
+//selection hashmap arraylist
+public static <K, V> List<Map.Entry<K, V>> selectionSort(HashMap<K, V> map, Comparator<Map.Entry<K, V>> comp) {
+    List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
+
+    for (int i = 0; i < list.size() - 1; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < list.size(); j++) {
+            if (comp.compare(list.get(j), list.get(minIndex)) < 0) {
+                minIndex = j;
+            }
+        }
+        Collections.swap(list, i, minIndex);
+    }
+    return list;
+}
+
+
+//insertion
+public static void insertionSort(int[] list) {
+   for (int i=1; i<list.length; i++) {
+      //Insert element i in the sorted sub-list
+      int currentVal = list[i];
+      int j = i;
+      while (j > 0 && currentVal < (list[j - 1])){
+         // Shift element (j-1) into element (j)
+         list[j] = list[j - 1];
+         j--;
+      }
+      // Insert currentVal at index j 
+      list[j] = currentVal;
+   }
+}
+//insertion in LinkedList for TreeNode
+public void insertionSortLinkedList(Comparator<E> comp) {
+    if (head == null) return;
+
+    Node sorted = null;
+    Node current = head;
+
+    while (current != null) {
+        Node next = current.next;
+        sorted = sortedInsert(sorted, current, comp);
+        current = next;
+    }
+    head = sorted;
+}
+
+private Node sortedInsert(Node sorted, Node newNode, Comparator<E> comp) {
+    if (sorted == null || comp.compare(sorted.value, newNode.value) >= 0) {
+        newNode.next = sorted;
+        return newNode;
+    }
+    Node current = sorted;
+    while (current.next != null && comp.compare(current.next.value, newNode.value) < 0) {
+        current = current.next;
+    }
+    newNode.next = current.next;
+    current.next = newNode;
+    return sorted;
+}
+//insertion arraylist tree node
+public static <T> void insertionSort(ArrayList<TreeNode<T>> list, Comparator<TreeNode<T>> comp) {
+    for (int i = 1; i < list.size(); i++) {
+        TreeNode<T> key = list.get(i);
+        int j = i - 1;
+
+        while (j >= 0 && comp.compare(list.get(j), key) > 0) {
+            list.set(j + 1, list.get(j));
+            j--;
+        }
+        list.set(j + 1, key);
+    }
+}
+//insertion linkedlist treeNode
+public void insertionSort(Comparator<TreeNode<T>> comp) {
+    if (head == null || head.next == null) return;
+
+    Node<T> sorted = null;
+    Node<T> current = head;
+
+    while (current != null) {
+        Node<T> next = current.next;
+        sorted = sortedInsert(sorted, current, comp);
+        current = next;
+    }
+    head = sorted;
+}
+
+private Node<T> sortedInsert(Node<T> sorted, Node<T> newNode, Comparator<TreeNode<T>> comp) {
+    if (sorted == null || comp.compare(newNode.treeNode, sorted.treeNode) <= 0) {
+        newNode.next = sorted;
+        return newNode;
+    }
+    Node<T> current = sorted;
+    while (current.next != null && comp.compare(newNode.treeNode, current.next.treeNode) > 0) {
+        current = current.next;
+    }
+    newNode.next = current.next;
+    current.next = newNode;
+    return sorted;
+}
+//insertion for linkedlist hashmap
+public Node<K, V> insertionSort(Node<K, V> head, Comparator<Node<K, V>> comp) {
+    if (head == null || head.next == null) return head;
+
+    Node<K, V> sorted = null;
+    Node<K, V> current = head;
+
+    while (current != null) {
+        Node<K, V> next = current.next;
+        sorted = sortedInsert(sorted, current, comp);
+        current = next;
+    }
+    return sorted;
+}
+
+private Node<K, V> sortedInsert(Node<K, V> sorted, Node<K, V> newNode, Comparator<Node<K, V>> comp) {
+    if (sorted == null || comp.compare(newNode, sorted) <= 0) {
+        newNode.next = sorted;
+        return newNode;
+    }
+    Node<K, V> current = sorted;
+    while (current.next != null && comp.compare(newNode, current.next) > 0) {
+        current = current.next;
+    }
+    newNode.next = current.next;
+    current.next = newNode;
+    return sorted;
+}
+//insertion hashmap arraylist
+public static <K, V> List<Map.Entry<K, V>> insertionSort(HashMap<K, V> map, Comparator<Map.Entry<K, V>> comp) {
+    List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
+
+    for (int i = 1; i < list.size(); i++) {
+        Map.Entry<K, V> key = list.get(i);
+        int j = i - 1;
+
+        while (j >= 0 && comp.compare(list.get(j), key) > 0) {
+            list.set(j + 1, list.get(j));
+            j--;
+        }
+        list.set(j + 1, key);
+    }
+    return list;
+}
+
+
+
+
+
+

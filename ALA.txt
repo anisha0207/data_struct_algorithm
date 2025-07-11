@@ -1,0 +1,50 @@
+ALA 5:
+- comparator using compareTo
+- Test: state and tree operations in menu class, read, search
+
+ALA 6: 
+- post fix Stack
+
+ALA 7: 
+- ArrayList: sort method with comaprator and comparable, shuffle(), ListIterator<E>
+
+ALA 8: 
+- ArrayList/LinkedList: contain, remove, add (with iterations)
+- AnimalList: instantiate arraylist and linkedlist, read file, test contain/add/remove
+
+ALA 9: 
+- TreeSet/priorityQueue: 
+height() returns the height of the tree. 
+At any node in the binary tree, the height of the tree that starts at the node is the maximum of the height of the left subtree and the height of the  right subtree. 
+The height of an empty tree is 0. The method should be implemented recursively.
+boolean isBalanced() returns true if the binary tree is balanced, false otherwise. 
+A binary tree is balanced if and only if, for each node in the tree, the heights of the left subtree and the right subtree differ by 1 at most. 
+An empty tree is balanced. The method should be implemented recursively.
+- AnimalTree:
+instantiate TreeSet and priorityQueue
+# of interations for 20 animals out of 500. Average number for add and offer
+Sort arrayList using method sort form Arraylist-- clear it, add sorted animal names
+
+ALA 10: 
+- HashMap modication usign iterations of get, put, and rmeove()
+- LinkeList and TreeSet: iterations for add, contains and remove
+- Test:
+*Create an instance of the class HashMap for the types <String, String> with an initial capacity equal to 50,000. 
+Read the file “dictionary.txt” that contains more than 50,000 English words and their definition (one word and its definition per line).
+Add each pair (word and its definition) to the hashmap.
+*Create an instance of the classes TreeSet and LinkedList for type String.
+*Create an ArrayList for type MapEntry<String,String> to collect the words from the hashmap using the method toList() 
+(this step will remove any duplicates in the dictionary and also shuffle the alphabetical order).
+*Clear the hashmap and add the words from the arraylist to the HashMap, 
+TreeSet and LinkedList instances. Display the number of iterations of the methods add() for the linked list and the BST, and the method put() for the hashmap. 
+Display the number of iterations for 20 insertions only. Display an average for each add method.
+*Perform 1000 search operations on the hashmap, bst, and linked list for 1000 words randomly selected from the array list.
+*Display the number of iterations of the three search operations (get and contains) for 20 out of the 1000 search operations. 
+Display the average number of iterations for each search operation.
+*Perform 1000 remove operations on the hashmap, bst, and linked list for 1000 words randomly selected from the array list.
+*Display the number of iterations of the three remove operations for 20 out of the 1000 search operations. 
+Display the average number of iterations for each remove operation.
+
+ALA 11:
+class Sort to make the first six sorting algorithms generic and the eight algorithms accept an array list as a parameter, instead of an array.
+

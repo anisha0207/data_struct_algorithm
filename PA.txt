@@ -1,0 +1,42 @@
+PA 4:
+- tree(): tree like format of the file in the directory; used helper method
+- findWord(): finding the occurance of a word in the txt file (read file)
+- Main class: menu
+
+PA 5: 
+- ComaparatorByDouble: incorporated in separate class where it comapred two objects; generic; compare()
+- Rational: add, sub, mult, div rationals; Euclid's GCD; reduce fraction; equals using instanceof objects
+- Test: sort and search (helper) using generic 
+
+PA 6: 
+- Pair/Triple: implementing object as variable; equals() using generic/pairing
+- Athletes: getTotalMedals() for specificied year and all the years; adding medals usign specific type(b,s,g); compareTo, equals; linkedlist incoporated using for each loop
+- Olympics: reading the file(helper) for the main Olympics class(), add, find, remove; 
+    **getting top ten athletes by compare(Comparator) in specificied year; using iterator and hasNext() to iterate through; sorting
+    **top ten countries: Collection; 
+
+PA 7/8: 
+- Arraylist: equals(), clone(), indexOf(), lastIndexOf(), sort(priorityQueue), toArray()
+- LinkedList: addFirst() Node, addLast(), add(), getFirst(), getLast(), removeFirst(), removeLast(), remove(), next(), indexOf, lastindexof, iterator for [addAll, removeAll, retainAll, clone()]
+sort() priority Queue
+- Collection: follow UML strictly
+- List: follow UML strictly
+- Priority Queue: peek(), offer(), poll()
+
+PA 9:
+TreeMap:
+- first(): returns a key-value pair with the lowest key in this tree map, or null if the tree map is empty.
+- last(): returns a key-value pair associated with the highest key in this tree map, or null if the tree map is empty.
+- ceiling(K k): returns a key-value pair associated with the least key greater than or equal to k, or null if the tree is empty or k is greater than all the keys in the tree.
+- floor(K k): returns a key-value pair associated with the greatest key less than or equal to k, or null if the tree is empty or k is less than all the keys in the tree.
+- keys(): returns a collection of the keys in the tree using the inorder traversal.
+- values(): returns a collection of the values in the tree using the inorder traversal.
+
+PA 10:
+- HashMapLP: arrayList; rehash, put, remove, get, containsKey, toList
+Printcharacteristics()--clusters
+- HashMapSC: linkedlist; rehash, put, remove, get, containsKey, toList
+Printcharacteristics()--buckets
+
+
+
