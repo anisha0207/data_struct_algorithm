@@ -1,49 +1,147 @@
-public class Test{
-    public static void main(String[]args){
-        Person[] people = new Person [3];//create array of people with the size 3
-        people[0] = new Student (123456789, "Paul Leister", "972 4th Street, Allentown", "610-331-7177", "pleister@gmail.com", "CSE");
-        people[1] = new Employee (334422110, "Beth Down", "234 Main Street, Philadelphia", "484-222-4433", "bdown@gmail.com", "System Administrator", 75000.00);
-        people[2] = new Faculty (222222222, "Mark Jones", "21 Orchid Street, Bethlehem", "610-333-2211", "mjones@gmail.com", "Faculty", 100000.00, "Associate Professor");
-
-        //each row of array is defined, calling onto the subclass while creating Person as the array type
-
-        System.out.println("Original List: ");
-        printArray(people);//print the original array 
-
-        System.out.println("\nList sorted by name: ");
-        sortArray(people, true); //sort by name, true indicates name sort
-        printArray(people);//print the sorted array
-
-        System.out.println("\nList sorted by id: ");
-        sortArray(people, false); //sort by id, false indicates id sort
-        printArray(people);//print the sorted array
-        
-    }
-    public static void printArray(Person[] people){//printing the array through the for loop 
-        for (int i = 0; i<people.length; i++){
-            System.out.println(people[i]);
+import java.util.ArrayList;
+import java.util.Comparator;
+public class Test {
+    public static <E> void print (ArrayList<E> list){//print out the list of the fractions through a for each loop
+        for (E r : list){
+            System.out.println(r);
         }
     }
-    public static void sortArray(Person[] people, boolean sort) {//sorting the array through selection sort
-        for (int i = 0; i < people.length - 1; i++) {//the boolean indicates true for sorting name (string) adn false for id (int)
-            int index = i;
-            for (int j = i + 1; j < people.length; j++) {//through each iteration of the array, it is sorted by calling onto the getName or getID method from the subclass
-                if (sort){
-                    if (people[j].getName().compareTo(people[index].getName()) < 0) {
-                        index = j; //this selection sort is done through strings
-                    }
-                }
-                else{    
-          	        if(people[j].getID() < people[index].getID()){
-             		    index=j;//this selection sort is done through int
-                    }
-                }
-            }
-            Person temp = people[i];//the swapping starts here 
-      		people[i] = people[index];
-      		people[index] = temp;
-        
-        }
+    public static <E> int search(ArrayList<E> list, E key){//search the array using the helper method below, starting from index 0
+            return searchHelp(list, key, 0);
     }
+    public static <E> int searchHelp(ArrayList<E> list, E key, int index){//this helper method will detect if the index is greater than the size, it will return -1
+        if (index >= list.size()){
+            return -1;
+        }
+        if (list.get(index).equals(key)){//will print index if the index is equal to the key 
+            return index;
+        }
+        return searchHelp(list, key, index + 1);//keep searching 
+    }
+    public static <E> void sort (ArrayList<E> list, Comparator <E> c){//sort the array list from minimum to maximum
+            for(int i=0; i<list.size(); i++){
+               int minIndex = i;
+               for(int j=i+1; j<list.size(); j++)     
+                   if(c.compare(list.get(j), list.get(minIndex)) < 0){
+                    minIndex = j;
+                   }
+               E temp = list.get(i);
+               list.set(i,list.get(minIndex));
+               list.set(minIndex, temp);
+           }
+    }
+    public static void main(String[] args){
+        // Test the class Rational
+        System.out.println("\nTest case 1: Arithmetic on Fractions");
+        Rational r1 = new Rational(1, 2);
+        Rational r2 = new Rational(3, 2);
+        System.out.println(r1 + " + " + r2 + " = " + r1.add(r2));
+        System.out.println(r1 +  " - " + r2 + " = " + r1.sub(r2));
+        System.out.println(r1 + " * " + r2 + " = " + r1.mult(r2));
+        System.out.println(r1 + " / " + r2 + " = " + r1.div(r2));
 
+        System.out.println("\nTest case 2: Arithmetic on Fractions");
+        r1 = new Rational(2, 3);
+        r2 = new Rational(3, 5);
+        System.out.println(r1 + " + " + r2 + " = " + r1.add(r2));
+        System.out.println(r1 + " - " + r2 + " = " + r1.sub(r2));
+        System.out.println(r1 + " * " + r2 + " = " + r1.mult(r2));
+        System.out.println(r1 + " / " + r2 + " = " + r1.div(r2));
+
+        System.out.println("\nTest case 3: Arithmetic on Fractions");
+        r1 = new Rational(1, 4);
+        r2 = new Rational(3, 4);
+        System.out.println(r1 + " + " + r2 + " = " + r1.add(r2));
+        System.out.println(r1 + " - " + r2 + " = " + r1.sub(r2));
+        System.out.println(r1 + " * " + r2 + " = " + r1.mult(r2));
+        System.out.println(r1 + " / " + r2 + " = " + r1.div(r2));
+
+        System.out.println("\nTest case 4: Arithmetic on Fractions");
+        r1 = new Rational(4, 8);
+        r2 = new Rational(3, 9);
+        System.out.println(r1 + " + " + r2 + " = " + r1.add(r2));
+        System.out.println(r1 + " - " + r2 + " = " + r1.sub(r2));
+        System.out.println(r1 + " * " + r2 + " = " + r1.mult(r2));
+        System.out.println(r1 + " / " + r2 + " = " + r1.div(r2));
+
+        // Creating a dataset of numbers
+        ArrayList<Number> numbers = new ArrayList<>(25);
+        for(int i=0; i<5; i++){
+            numbers.add(new Rational((int)(Math.random()*10), (int)(Math.random()*9)+1));
+        }
+        for(int i=0; i<5; i++){
+            numbers.add((int)(Math.random()*1000000000));
+        }
+        for(int i=0; i<5; i++){
+            numbers.add((long)(Math.random()*10000000000L));
+        }
+        for(int i=0; i<5; i++){
+            numbers.add(Math.random()*1e20);
+        }
+        for(int i=0; i<5; i++){
+            numbers.add(Math.random()*1e40);
+        }
+        java.util.Collections.shuffle(numbers);
+
+        // print the list of numbers
+        System.out.println("\n\nTest case 5: Generic print method");
+        System.out.println("List of Numbers");
+        print(numbers);
+
+        // Test Searching for a number
+        System.out.println("\n\nTest case 6: Generic Search Method (fail)");
+        Number n = new Rational(3,4);
+        int index = search(numbers, n);
+        if(index == -1){
+            System.out.println("Number " + n + " not found.");
+        }
+        else{
+            System.out.println("Number " + n + " found at index " + index);
+        }
+
+        System.out.println("\nTest case 7: Generic Search Method (success)");
+        n = numbers.get(4);
+        index = search(numbers, n);
+        if(index == -1){
+            System.out.println("Number " + n + " not found.");
+        }
+        else{
+            System.out.println("Number " + n + " found at index " + index);
+        }
+
+        System.out.println("\nTest case 8: Generic Search Method (success)");
+        n = numbers.get(9);
+        index = search(numbers, n);
+        if(index == -1){
+            System.out.println("Number " + n + " not found.");
+        }
+        else{
+            System.out.println("Number " + n + " found at index " + index);
+        }
+
+        System.out.println("\nTest case 9: Generic Search Method (success)");
+        n = numbers.get(12);
+        index = search(numbers, n);
+        if(index == -1){
+            System.out.println("Number " + n + " not found.");
+        }
+        else{
+            System.out.println("Number " + n + " found at index " + index);
+        }
+
+        System.out.println("\nTest case 10: Generic Search Method (fail)");
+        n = 35.75;
+        index = search(numbers, n);
+        if(index == -1){
+            System.out.println("Number " + n + " not found.");
+        }
+        else{
+            System.out.println("Number " + n + " found at index " + index);
+        }
+        // Test Sorting by double
+        System.out.println("\n\nTest case 11: Generic Sort Method with a Comparator");
+        sort(numbers, new ComparatorByDouble());
+        System.out.println("List of Numbers sorted by their double values");
+        print(numbers);
+    }         
 }
